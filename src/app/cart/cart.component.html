@@ -1,0 +1,59 @@
+<div class="container my-4 text-white">
+  <h2>Your Cart:</h2>
+  @if(cartItems.length > 0){
+  <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Subtotal</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of cartItems; track item.id) {
+        <tr>
+          <td>{{ item.name }}</td>
+          <td>€{{ item.price }}</td>
+          <td>
+            <input
+              type="number"
+              [value]="item.quantity"
+              min="1"
+              (change)="updateQuantity(item.id, $event)"
+            />
+          </td>
+          <td>€{{ item.price * item.quantity }}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="removeItem(item.id)">
+              Remove
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    <div class="text-end text-white">
+      <h4>Total: €{{ total | number : "1.2-2" }}</h4>
+      <h4>Service fee 10%: €{{ total * 0.1 | number : "1.2-2" }}</h4>
+      @if (total >= 1500) {
+      <h4>
+        Total incl. Service fee: {{ total + total * 0.1 | number : "1.2-2" }}
+      </h4>
+      <h4>
+        Total incl. 15% discount:
+        {{ (total + total * 0.1) * 0.85 | number : "1.2-2" }}
+      </h4>
+      }@else {
+      <h4>
+        Total incl. Service fee: {{ total + total * 0.1 | number : "1.2-2" }}
+      </h4>
+      }
+    </div>
+  </div>
+  }@else{
+  <p>Your cart is empty!</p>
+  }
+</div>
